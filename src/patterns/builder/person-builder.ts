@@ -1,25 +1,29 @@
-import { Person } from "@src/person";
+import { Person, isPerson } from "@src/person";
+import { AssertionError } from "assert";
 
 export interface PersonBuilder {
-  person: Partial<Person>;
-
   withName: (name: string) => PersonBuilder;
   withAge: (age: number) => PersonBuilder;
   build: () => Person;
 }
 
 export const personBuilder = (): PersonBuilder => {
+  const person: Partial<Person> = {};
   const builder: PersonBuilder = {
-    person: {},
     withName: (name: string) => {
-      builder.person.name = name;
+      person.name = name;
       return builder;
     },
     withAge: (age: number) => {
-      builder.person.age = age;
+      person.age = age;
       return builder;
     },
-    build: () => builder.person as Person,
+    build: () => {
+      if (!isPerson(person)) {
+        throw new AssertionError({ message: "Invalid parameters" });
+      }
+      return person;
+    },
   };
 
   return builder;
