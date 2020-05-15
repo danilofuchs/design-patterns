@@ -1,0 +1,3 @@
+{
+    "extends": ["@ebanx/eslint-config-nba", "@ebanx/eslint-config-nba/node"]
+}
